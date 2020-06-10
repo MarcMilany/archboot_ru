@@ -77,7 +77,8 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 # ============================================================================
 
 ### Installer default language (Язык установки по умолчанию)
-ARCHBOOT_LANG="english"
+#ARCHBOOT_LANG="english"
+ARCHBOOT_LANG="russian"
 
 ### Default error msg (required when locale vars unsourced) 
 ### (Сообщение об ошибке по умолчанию (требуется при непроверенные язык Варс ))
