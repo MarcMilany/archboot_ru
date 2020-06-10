@@ -101,9 +101,11 @@ BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; MAGENTA="\e[1;35m"; NC="\e[0m
 URL="https://raw.githubusercontent.com/MarcMilany/archboot_ru/${BRANCH}"
 ### Github pages url (URL страницы Github)
 #export GHPAGES=\
-"https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
+#"https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
+#GHPAGES=\
+#"https://raw.githubusercontent.com/MarcMilany/archboot_ru/gh-pages"
 GHPAGES=\
-"https://raw.githubusercontent.com/MarcMilany/archboot_ru/gh-pages"
+"https://raw.githubusercontent.com/grm34/archboot/gh-pages"
 
 # Github url: $ _url для источников и $ _gh_pages для изображений
 #_url = " https://raw.githubusercontent.com/grm34/archboot/ $ {__ branch__} "
