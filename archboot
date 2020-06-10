@@ -76,6 +76,10 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 # environment, выберите опцию или задайте некоторую информацию пользователю.
 # ============================================================================
 
+#echo 'Setting up the Russian language, changing the console font to one that supports Cyrillic for ease of use'
+# Настроим русский язык, изменим консольный шрифт на тот, который поддерживает кириллицу для удобства работы
+loadkeys ru
+setfont cyr-sun16
 ### Installer default language (Язык установки по умолчанию)
 ARCHBOOT_LANG="russian"
 
