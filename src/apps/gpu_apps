@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#                         DEFAULT DRIVER PACKAGES
+# ============================================================================
+
+# Default Driver
+export DEFAULT_DRIVER="xf86-video-vesa"
+
+#                          INTEL DRIVER PACKAGES
+# ============================================================================
+
+export INTEL_DRIVER="xf86-video-intel"
+export OPENGL_INTEL="mesa vulkan-intel"
+export HARDVIDEO_INTEL="libva-intel-driver intel-media-driver"
+
+#                         ATI/AMD DRIVER PACKAGES
+# ============================================================================
+
+export AMD_DRIVER="xf86-video-ati xf86-video-amdgpu"
+export OPENGL_AMD="mesa vulkan-radeon"
+export HARDVIDEO_AMD="mesa-vdpau libva-mesa-driver"
+
+#                         NVIDIA DRIVER PACKAGES
+# ============================================================================
+
+# open source
+export NOUVEAU_DRIVER="xf86-video-nouveau"
+export OPENGL_NOUVEAU="mesa"
+export HARDVIDEO_NOUVEAU="libva-mesa-driver mesa-vdpau"
+
+# proprietary
+export NVIDIA_DRIVER="nvidia nvidia-settings"
+export NVIDIA_LTS="nvidia-lts nvidia-settings"
+export NVIDIA_DKMS="nvidia-dkms nvidia-settings"
+export OPENGL_NVIDIA="nvidia-utils"
+export HARDVIDEO_NVIDIA="nvidia-utils"
+
+#                         HARDWARE VIDEO UTILS
+# ============================================================================
+
+export HARDVIDEO_UTILS="libva-utils vdpauinfo"
+
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
+# ============================================================================

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+#                        GET MIRRORS & TIMEZONE
+# ============================================================================
+# Here we use <curl> to get user country and timezone from <ipinfo.io> API.
+# Country code is used to get corresponding mirrors from <archlinux.org>
+# for fastest downloads during installation. To prevent errors we check if
+# timezone is in available list, otherwise we prompt user to set it manualy.
+# Last function is used to simply set live system clock according to NTP.
+# ============================================================================
+TOKEN="26d03faada92e8"
+
+_mirrorlist() {
+
+    ### Get user country code from ipinfo.io API
+    _info "${MSG_GET_MIRRORS}"
+    CODE=$( curl -s https://ipinfo.io/country?token=${TOKEN} )
+    CHECK_COUNTRY_CODE=$( echo "${COUNTRY}" | grep "error" )
+
+    ### Update mirrorlist if country code properly detected
+    if [[ ! ${CHECK_COUNTRY_CODE} && ${CODE} =~ ^[A-Z]{2}$ ]]; then
+        _note "${CODE} ${MSG_MIRRORS_TRUE}"
+
+        # Get corresponding mirrors from archlinux.org
+        MIRRORLIST="/etc/pacman.d/mirrorlist"
+
+        MIRRORS_URL=\
+"https://www.archlinux.org/mirrorlist/?country=${CODE}&use_mirror_status=on"
+
+        USER_MIRRORS=\
+$( curl -s "${MIRRORS_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' )
+
+        CHECK_MIRRORS=$( echo "${USER_MIRRORS}" | grep "DOCTYPE html" )
+
+        # Update mirrorlist if mirrors properly detected
+        if [[ ! ${CHECK_MIRRORS} ]]; then
+            _check mv ${MIRRORLIST} ${MIRRORLIST}.backup
+
+            curl -s \
+"${MIRRORS_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' > ${MIRRORLIST}
+
+            _check cat ${MIRRORLIST}.backup >> ${MIRRORLIST}
+        fi
+
+    ### Defaults mirrors if not detected
+    else
+        _note "${MSG_MIRRORS_FALSE}"
+    fi
+}
+
+_timezone() {
+
+    ### Get user timezone from ipinfo.io API
+    _info "${MSG_GET_TIMEZONE}"
+    TIMEZONE=$( curl -s https://ipinfo.io/timezone?token=${TOKEN} )
+
+    ### Update timezone if properly detected
+    if grep -Fxq "${TIMEZONE}" ./timezone; then
+        _note "${TIMEZONE} ${MSG_TIMEZONE_TRUE}"
+
+    ### Otherwise ask timezone to user
+    else
+        until grep -Fxq "${TIMEZONE}" ./timezone; do
+            _note "${MSG_TIMEZONE_FALSE}"
+            _prompt "${MSG_PROMPT_TIMEZONE}" "${MSG_TIMEZONE_EXAMPLE}"
+            read -r TIMEZONE
+        done
+    fi
+    export TIMEZONE
+}
+
+### Set system clock
+_clock() {
+    _info "${MSG_CLOCK}"
+    _check timedatectl set-timezone "${TIMEZONE}"
+
+    # Ensure UDP 123 is open
+    GET_IP=$( curl -s https://ipinfo.io/ip?token=${TOKEN} )
+    CHECK_IP=$( echo "${GET_IP}" | grep "error" )
+
+    if [[ ! ${CHECK_IP} ]]; then
+        CHECK_UDP123=$( nmap -Pn -sU "${GET_IP}" -p 123 | grep "open" )
+
+        # Set ntp true
+        if [[ ${CHECK_UDP123} ]]; then _check timedatectl set-ntp true; fi
+    fi
+
+    # Update time
+    _check hwclock --systohc
+    timedatectl show
+    echo "-> ${MSG_DONE}"
+}
+
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
+# ============================================================================
