@@ -77,7 +77,7 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 # ============================================================================
 
 ### Installer default language (Язык установки по умолчанию)
-ARCHBOOT_LANG="english"
+ARCHBOOT_LANG="russian"
 
 ### Default error msg (required when locale vars unsourced) 
 ### (Сообщение об ошибке по умолчанию (требуется при непроверенные язык Варс ))
@@ -92,9 +92,18 @@ BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; MAGENTA="\e[1;35m"; NC="\e[0m
 
 ### Urls (current branch, gh-pages, AUR Helper, mirrors, grub theme, ipinfo)
 ### URL-адреса (текущей ветки, гр-страниц, помощник аур, зеркала, grub тема, сайт ipinfo)
-export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
-export GHPAGES=\
+### Current branch url (Текущий URL ветки)
+#export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
+URL="https://raw.githubusercontent.com/MarcMilany/archboot_ru/${BRANCH}"
+### Github pages url (URL страницы Github)
+#export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
+GHPAGES=\
+"https://raw.githubusercontent.com/MarcMilany/archboot_ru/gh-pages"
+
+# Github url: $ _url для источников и $ _gh_pages для изображений
+#_url = " https://raw.githubusercontent.com/grm34/archboot/ $ {__ branch__} "
+#_gh_pages = " https://raw.githubusercontent.com/grm34/archboot/gh-pages "
 
 ### Display some notes (Дисплей некоторые заметки)
 _note() {
@@ -103,7 +112,7 @@ _note() {
 
 ### Display install steps (Отображение шагов установки)
 _info() {
-    echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"; sleep 1
+    echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"; sleep 2
 }
 
 ### Ask some information (Спросите немного информации)
@@ -247,7 +256,7 @@ while getopts 'hl:k:' OPTION; do
         h)  _help; rm -f old_vars.log; _exit_msg; exit 0;;
 
         # Installer language (-l, --lang) (Язык установщика)
-        l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
+        l)  if [[ ${OPTARG} =~ ^(russian$|english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
                 echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
